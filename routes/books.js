@@ -67,11 +67,11 @@ router.patch('/:id', (req, res, next) => {
           "author": req.body.author,
           "genre": req.body.genre,
           "description": req.body.description,
-          "cover_url": req.body.cover_url,
+          "cover_url": req.body.coverUrl,
         })
         .returning('*')
         .then((data) => {
-          res.json(data[0])
+          res.json(humps.camelizeKeys(data[0]))
         })
     })
     .catch((err) => {
@@ -89,9 +89,13 @@ router.delete('/:id', function(req, res, next) {
       knex('books')
         .del()
         .where('id', req.params.id)
-        .then(() => {
-          res.send(`ID ${req.params.id} Deleted`)
+        .returning(['title', 'author', 'genre', 'description', 'cover_url'])
+        .then((data) => {
+          res.json(humps.camelizeKeys(data[0]))
         })
+      // .then(() => {
+      //   res.send(`ID ${req.params.id} Deleted`)
+      // })
     })
     .catch((err) => {
       next(err)
