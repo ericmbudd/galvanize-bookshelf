@@ -38,16 +38,16 @@ router.get('/:id', (req, res, next) => {
 // CREATE ONE record for this table
 router.post('/', (req, res, next) => {
   knex('books')
-    .insert(humps.decamelizeKeys({
+    .insert({
       "title": req.body.title,
       "author": req.body.author,
       "genre": req.body.genre,
       "description": req.body.description,
-      "cover_url": req.body.cover_url
-    }))
+      "cover_url": req.body.coverUrl
+    })
     .returning('*')
     .then((data) => {
-      res.json(data[0])
+      res.json(humps.camelizeKeys(data[0]))
     })
     .catch((err) => {
       next(err)
