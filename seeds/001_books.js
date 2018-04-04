@@ -77,7 +77,7 @@ exports.seed = function(knex, Promise) {
         }])
         .then(function() {
           // Moves id column (PK) auto-incrementer to correct value after inserts
-          return knex.raw("SELECT setval('books_id_seq', (SELECT MAX(id) FROM minidiscs));")
+          return knex.raw("SELECT setval('books_id_seq', (SELECT MAX(id) FROM books));")
         })
     });
 };
