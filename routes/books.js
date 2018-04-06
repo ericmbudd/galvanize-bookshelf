@@ -16,7 +16,8 @@ router.get('/', (req, res, next) => {
   knex('books')
     .orderBy('title')
     .then((rows) => {
-      res.json(humps.camelizeKeys(rows))
+      res
+        .json(humps.camelizeKeys(rows))
     })
     .catch((err) => {
       next(err)

@@ -1,23 +1,40 @@
 'use strict';
 
 const express = require('express');
-
+const knex = require('../knex')
+const humps = require('humps')
 // eslint-disable-next-line new-cap
 const router = express.Router();
 
 // YOUR CODE HERE
 
+// router.get('/', (req, res, next) => {
+//   knex('books')
+//     .orderBy('title')
+//     .then((rows) => {
+//       res.json(humps.camelizeKeys(rows))
+//     })
+//     .catch((err) => {
+//       next(err)
+//     })
+// })
+
 // CREATE ONE record for this table
 router.post('/', (req, res, next) => {
+  // res.send(200)
   knex('users')
     .insert({
-      "first_name": req.body.title,
-      "last_name": req.body.author,
-      "email": req.body.genre,
-      "password": req.body.description,
-      "cover_url": req.body.coverUrl
+      "first_name": req.body.firstName,
+      "last_name": req.body.lastName,
+      "email": req.body.email,
+      "hashed_password": req.body.password,
     })
-    .returning('*')
+    .returning([
+      "id",
+      "first_name",
+      "last_name",
+      "email"
+    ])
     .then((data) => {
       res.json(humps.camelizeKeys(data[0]))
     })
