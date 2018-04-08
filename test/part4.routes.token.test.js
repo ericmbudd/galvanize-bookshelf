@@ -31,7 +31,7 @@ suite('part4 routes token', addDatabaseHooks(() => {
         email: 'jkrowling@gmail.com',
         password: 'youreawizard'
       })
-      .expect('set-cookie', /token=[a-zA-Z0-9\-_]+\.[a-zA-Z0-9\-_]+\.[a-zA-Z0-9\-_]+; /)
+      .expect('set-cookie', /token=[a-zA-Z0-9\-_]+\.[a-zA-Z0-9\-_]+\.[a-zA-Z0-9\-_]+; Path=\/;.+HttpOnly/)
       .expect((res) => {
         delete res.body.createdAt;
         delete res.body.updatedAt;

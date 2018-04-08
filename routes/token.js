@@ -21,7 +21,9 @@ router.post('/', (req, res, next) => {
     .first()
     .then((rows) => {
       let signedUser = jwt.sign(rows, KEY)
-      res.cookie("/token", signedUser)
+      res.cookie("/token", signedUser, {
+        httpOnly: true
+      })
       res.send({
         "id": rows.id,
         "firstName": rows.first_name,
@@ -32,35 +34,16 @@ router.post('/', (req, res, next) => {
     .catch((err) => {
       next(err)
     })
-
-  // res.send({
-  //   "email": "jkrowling@gmail.com",
-  //   "firstName": "Joanne",
-  //   "id": 1,
-  //   "lastName": "Rowling"
-  // });
-
-
-  // .then((rows) => {
-  //   console.log(rows);
-  //   res.json(rows)
-  // })
-
-
-
-  //console.log(req);
-  // console.log(req.cookies.user);
-
-
 })
 
 
 router.get('/', (req, res, next) => {
   console.log("hi there");
   //console.log(req);
-  //console.log(req.cookies.user);
+  //console.log(req.cookies);
+  console.log(req.cookies['/token']);
 
-  if (req.cookies.user) {
+  if (req.cookies['/token']) {
     res.json(true)
   } else {
     res.json(false)
