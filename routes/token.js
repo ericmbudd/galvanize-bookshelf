@@ -32,7 +32,10 @@ router.post('/', (req, res, next) => {
       });
     })
     .catch((err) => {
-      next(err)
+      //res.statusCode(400)
+      res.setHeader('content-type', 'text/plain');
+      res.status(400)
+      res.send("Bad email or password")
     })
 })
 
