@@ -17,7 +17,7 @@ router.post('/', (req, res, next) => {
 
   //console.log(req.body.password);
 
-  bcrypt.hash(req.body.password, 12).then(function(hash) {
+  bcrypt.hash(req.body.password, 10).then(function(hash) {
     // Store hash in your password DB.
     console.log(hash);
     insertIntoDB(hash)
