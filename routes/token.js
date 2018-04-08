@@ -40,6 +40,14 @@ router.post('/', (req, res, next) => {
 })
 
 
+router.delete('/', (req, res, next) => {
+  res.cookie("/token", "", {
+    httpOnly: true
+  })
+  res.send('deleted')
+})
+
+
 router.get('/', (req, res, next) => {
   console.log("hi there");
   //console.log(req);
