@@ -3,6 +3,7 @@
 const express = require('express');
 const knex = require('../knex')
 const jwt = require("jsonwebtoken")
+const bcrypt = require('bcrypt');
 
 const router = express.Router();
 
@@ -15,6 +16,9 @@ router.post('/', (req, res, next) => {
   const KEY = req.body.password
   console.log("KEY", KEY)
   console.log("email", req.body.email)
+  console.log("hashed_password", bcrypt.hash(req.body.password, 10))
+
+  // need password handling for bcrypt promise
 
   knex('users')
     .where('email', req.body.email)
