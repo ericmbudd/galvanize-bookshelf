@@ -8,32 +8,41 @@ const bcrypt = require('bcrypt');
 const router = express.Router();
 
 
-
-
-// YOUR CODE HERE
-
-router.post('/', (req, res, next) => {
+function verifyLogin(req, res) {
   const KEY = req.body.password
   console.log("KEY", KEY)
   console.log("email", req.body.email)
-  console.log("hashed_password", bcrypt.hash(req.body.password, 10))
-
-  // need password handling for bcrypt promise
-
   knex('users')
     .where('email', req.body.email)
     .first()
     .then((rows) => {
-      let signedUser = jwt.sign(rows, KEY)
-      res.cookie("/token", signedUser, {
-        httpOnly: true
-      })
-      res.send({
-        "id": rows.id,
-        "firstName": rows.first_name,
-        "lastName": rows.last_name,
-        "email": rows.email,
+      console.log(rows);
+
+      bcrypt.compare(KEY, rows.hashed_password, function(err, passwordRes) {
+        // res == true
+        console.log('key', KEY);
+        console.log('input hashed', rows.hashed_password);
+        console.log('res', passwordRes);
+
+        if (passwordRes === true) {
+          let signedUser = jwt.sign(rows, KEY)
+          //console.log(signedUser);
+          res.cookie("/token", signedUser, {
+            httpOnly: true
+          })
+          res.send({
+            "id": rows.id,
+            "firstName": rows.first_name,
+            "lastName": rows.last_name,
+            "email": rows.email,
+          });
+        } else {
+          res.setHeader('content-type', 'text/plain');
+          res.status(400)
+          res.send("Bad email or password")
+        }
       });
+
     })
     .catch((err) => {
       //res.statusCode(400)
@@ -41,6 +50,16 @@ router.post('/', (req, res, next) => {
       res.status(400)
       res.send("Bad email or password")
     })
+}
+
+// YOUR CODE HERE
+
+router.post('/', (req, res, next) => {
+
+  console.log("hashed_password", bcrypt.hash(req.body.password, 10))
+
+  // need password handling for bcrypt promise
+  verifyLogin(req, res)
 })
 
 
