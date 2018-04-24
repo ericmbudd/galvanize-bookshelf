@@ -28,28 +28,24 @@ const getFavorites = (req, res, next) => {
   console.log("getFavorites");
 
 
-  //return next(boom.create(401, 'Unauthorized'));
 
-}
+  //const events_id = req.body.
+  //const users_id = jwt.verify(req.cookies.token, process.env.JWT_KEY).id
+  //res.locals.registered = false;
 
-
-//const events_id = req.body.
-//const users_id = jwt.verify(req.cookies.token, process.env.JWT_KEY).id
-//res.locals.registered = false;
-
-knex('favorites')
-  //  .where({
-  //      events_id,
-  //      users_id
-  //    })
-  //.join('events', 'events_users.events_id', 'events.id')
-  .then(favorites => {
-    console.log(favorites)
-    res.status(200).send(favorites)
-  })
-  .catch(err => {
-    next(err)
-  })
+  knex('favorites')
+    //  .where({
+    //      events_id,
+    //      users_id
+    //    })
+    //.join('events', 'events_users.events_id', 'events.id')
+    .then(favorites => {
+      console.log(favorites)
+      res.status(200).send(favorites)
+    })
+    .catch(err => {
+      next(err)
+    })
 }
 
 router.get('/', checkAuth, getFavorites)
