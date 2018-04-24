@@ -25,7 +25,7 @@ function verifyLogin(req, res) {
         // console.log('res', passwordRes);
 
         if (passwordRes === true) {
-          let signedUser = jwt.sign(rows, KEY)
+          let signedUser = jwt.sign(rows, process.env.JWT_KEY)
           //console.log(signedUser);
           res.cookie("/token", signedUser, {
             httpOnly: true
