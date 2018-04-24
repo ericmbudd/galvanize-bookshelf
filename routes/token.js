@@ -10,19 +10,19 @@ const router = express.Router();
 
 function verifyLogin(req, res) {
   const KEY = req.body.password
-  console.log("KEY", KEY)
-  console.log("email", req.body.email)
+  // console.log("KEY", KEY)
+  // console.log("email", req.body.email)
   knex('users')
     .where('email', req.body.email)
     .first()
     .then((rows) => {
-      console.log(rows);
+      // console.log(rows);
 
       bcrypt.compare(KEY, rows.hashed_password, function(err, passwordRes) {
         // res == true
-        console.log('key', KEY);
-        console.log('input hashed', rows.hashed_password);
-        console.log('res', passwordRes);
+        // console.log('key', KEY);
+        // console.log('input hashed', rows.hashed_password);
+        // console.log('res', passwordRes);
 
         if (passwordRes === true) {
           let signedUser = jwt.sign(rows, KEY)
@@ -56,7 +56,7 @@ function verifyLogin(req, res) {
 
 router.post('/', (req, res, next) => {
 
-  console.log("hashed_password", bcrypt.hash(req.body.password, 10))
+  //console.log("hashed_password", bcrypt.hash(req.body.password, 10))
 
   // need password handling for bcrypt promise
   verifyLogin(req, res)
